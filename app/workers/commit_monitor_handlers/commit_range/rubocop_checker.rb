@@ -6,6 +6,7 @@ class CommitMonitorHandlers::CommitRange::RubocopChecker
 
   include BranchWorkerMixin
   include CodeAnalysisMixin
+  include FormatterMixin
 
   def self.handled_branch_modes
     [:pr]
@@ -22,7 +23,7 @@ class CommitMonitorHandlers::CommitRange::RubocopChecker
   private
 
   def process_branch
-    @results = merged_linter_results
+    @results = formatted_comment(pronto_run)
     unless @results["files"].blank?
       diff_details = diff_details_for_merge
       @results     = RubocopResultsFilter.new(results, diff_details).filtered

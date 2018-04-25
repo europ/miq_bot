@@ -17,7 +17,7 @@ class CodeAnalyzer
 
   def analyze
     branch.repo.git_fetch
-    @results = merged_linter_results
+    @results = formatted_comment(pronto_run)
     offense_count = @results.fetch_path("summary", "offense_count")
     branch.update_attributes(:linter_offense_count => offense_count)
   end
